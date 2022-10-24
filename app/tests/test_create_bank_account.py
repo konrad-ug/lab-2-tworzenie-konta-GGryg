@@ -17,10 +17,10 @@ class TestCreateBankAccount(unittest.TestCase):
 
     #tutaj proszę dodawać nowe testy
     def test_tworzenie_konta_z_kodem(self):
-        konto_z_kodem = Konto(self.ime, self.nazwisko, self.PESEL, self.kod)
+        konto_z_kodem = Konto(self.imie, self.nazwisko, self.PESEL, self.kod)
         self.assertEqual(konto_z_kodem.imie, self.imie, "Imie nie zostało zapisane!")
         self.assertEqual(konto_z_kodem.nazwisko, self.nazwisko, "Nazwisko nie zostało zapisane!")
-        self.assertEqual(konto_z_kodem.saldo, 0, "Saldo nie jest zerowe!")
         self.assertEqual(konto_z_kodem.PESEL, self.PESEL, "PESEL nie został zapisany")
         self.assertEqual(len(konto_z_kodem.PESEL), 11, "Nie prawidłowa długość PESELa")
-        self.assertEqual(konto_z_kodem.kod[0:4], "PROM_", "Nie ma początku PROM_")
+        self.assertRegex(konto_z_kodem.kod, r"\bPROM_[A-Z]{3}\b", "Zły kupon")
+        self.assertEqual(konto_z_kodem.saldo, 50, "Saldo konta z kuponem równa się 0")
