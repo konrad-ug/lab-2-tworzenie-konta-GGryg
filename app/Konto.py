@@ -1,3 +1,5 @@
+import re
+
 class Konto:
     def __init__(self, imie, nazwisko, pesel, kod=None):
         self.imie = imie
@@ -6,8 +8,8 @@ class Konto:
         self.PESEL = pesel
         self.kod = kod
 
-        self.coupon(kod)
+        self.coupon(kod, pesel)
     
-    def coupon(self, kod):
-        if kod != None:
+    def coupon(self, kod, pesel):
+        if kod != None and re.match(r"\b[6-9|0][0-9]{10}\b", pesel):
             self.saldo = 50
