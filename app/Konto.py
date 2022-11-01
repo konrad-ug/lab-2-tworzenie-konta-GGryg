@@ -13,3 +13,9 @@ class Konto:
     def coupon(self, kod, pesel):
         if kod != None and re.match(r"\b[6-9|0][0-9]{10}\b", pesel):
             self.saldo = 50
+
+    def przelew(self, kwota):
+        self.saldo -= kwota
+
+    def dostaniePrzelew(self, kwota):
+        self.saldo += kwota

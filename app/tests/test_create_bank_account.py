@@ -6,7 +6,7 @@ class TestCreateBankAccount(unittest.TestCase):
     imie = "Dariusz"
     nazwisko = "Januszewski"
     PESEL = "12345678901"
-    PESELS = "50123456789"
+    PESELS = "60123456789"
     kod = "PROM_XYZ"
     def test_tworzenie_konta(self):
         pierwsze_konto = Konto(self.imie, self.nazwisko, self.PESEL)
