@@ -5,10 +5,20 @@ class Konto:
         self.imie = imie
         self.nazwisko = nazwisko
         self.saldo = 0
-        self.PESEL = pesel
+        self.PESEL = self.pesel_poprawnosc(pesel)
         self.kod = kod
 
         self.coupon(kod, pesel)
+
+    def pesel_poprawnosc(self, pesel):
+        help = re.search(r"^[0-9]*$", pesel)
+        if len(pesel) != 11:
+            return "Nie poprawny pesel"
+        else:
+            if help == None:
+                return "Nie poprawny pesel"
+            else:
+                return pesel
     
     def coupon(self, kod, pesel):
         if kod != None and re.match(r"\b[6-9|0][0-9]{10}\b", pesel):
