@@ -6,6 +6,7 @@ class KontoFirmowe(Konto):
         self.name = name
         self.nip = self.nip_poprawnosc(nip)
         self.saldo = 0
+        self.oplata_ekspres = 5
 
     def nip_poprawnosc(self, nip):
         help = re.search(r"^[0-9]*$", nip)

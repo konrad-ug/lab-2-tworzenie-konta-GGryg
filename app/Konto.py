@@ -7,6 +7,7 @@ class Konto:
         self.saldo = 0
         self.PESEL = self.pesel_poprawnosc(pesel)
         self.kod = kod
+        self.oplata_ekspres = 1
 
         self.coupon(kod, pesel)
 
@@ -29,3 +30,6 @@ class Konto:
 
     def dostaniePrzelew(self, kwota):
         self.saldo += kwota
+
+    def przelew_ekspress(self, kwota):
+        self.saldo -= kwota + self.oplata_ekspres
