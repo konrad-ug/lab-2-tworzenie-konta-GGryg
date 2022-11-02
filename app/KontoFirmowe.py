@@ -16,3 +16,4 @@ class KontoFirmowe(Konto):
                 return "Niepoprawny NIP!"
             else:
                 return nip
+
