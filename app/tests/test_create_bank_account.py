@@ -6,7 +6,7 @@ class TestCreateBankAccount(unittest.TestCase):
     imie = "Dariusz"
     nazwisko = "Januszewski"
     PESEL = "12345678901"
-    PESELS = "50123456789"
+    PESELS = "60123456789"
     kod = "PROM_XYZ"
     def test_tworzenie_konta(self):
         pierwsze_konto = Konto(self.imie, self.nazwisko, self.PESEL)
@@ -14,10 +14,24 @@ class TestCreateBankAccount(unittest.TestCase):
         self.assertEqual(pierwsze_konto.nazwisko, self.nazwisko, "Nazwisko nie zostało zapisane!")
         self.assertEqual(pierwsze_konto.saldo, 0, "Saldo nie jest zerowe!")
         self.assertEqual(pierwsze_konto.PESEL, self.PESEL, "PESEL nie został zapisany")
-        self.assertEqual(len(pierwsze_konto.PESEL), 11, "Nie prawidłowa długość PESELa")
-        self.assertRegex(pierwsze_konto.PESEL, r"\b[0-9]{11}\b")
 
     #tutaj proszę dodawać nowe testy
+
+    def test_krotki_pesel(self):
+        pesel = "23"
+        konto = Konto(self.imie, self.nazwisko, pesel)
+        self.assertEqual(konto.PESEL, "Nie poprawny pesel", "Pesel za krótki")
+
+    def test_dlugi_pesel(self):
+        pesel = "233432452743534"
+        konto = Konto(self.imie, self.nazwisko, pesel)
+        self.assertEqual(konto.PESEL, "Nie poprawny pesel", "Pesel za długi")
+
+    def test_litery_pesel(self):
+        pesel = "aaabbbcccdd"
+        konto = Konto(self.imie, self.nazwisko, pesel)
+        self.assertEqual(konto.PESEL, "Nie poprawny pesel", "Pesel zwiera litery")
+
     def test_tworzenie_konta_z_kodem(self):
         konto_z_kodem = Konto(self.imie, self.nazwisko, self.PESEL, self.kod)
         self.assertEqual(konto_z_kodem.imie, self.imie, "Imie nie zostało zapisane!")
