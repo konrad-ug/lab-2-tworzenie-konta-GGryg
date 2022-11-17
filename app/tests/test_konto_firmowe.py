@@ -16,6 +16,7 @@ class TestKontoFirmowe(unittest.TestCase):
         nip_krotki = "23"
         konto = KontoFirmowe(nip_krotki, self.name)
         self.assertEqual(konto.nip, "Niepoprawny NIP!")
+        
 
     def test_nip_litery(self):
         nip_litery = "2937asdsd"
