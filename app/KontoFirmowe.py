@@ -9,12 +9,9 @@ class KontoFirmowe(Konto):
         self.oplata_ekspres = 5
 
     def nip_poprawnosc(self, nip):
-        help = re.search(r"^[0-9]*$", nip)
-        if len(nip) != 10:
+        help = re.search(r"^[0-9]{10}$", nip)
+        if help == None:
             return "Niepoprawny NIP!"
         else:
-            if help == None:
-                return "Niepoprawny NIP!"
-            else:
-                return nip
+            return nip
 
