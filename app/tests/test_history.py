@@ -46,8 +46,8 @@ class HistoriaOperacji(unittest.TestCase):
     def test_dodawanie_operacji_przelew_firma(self):
         konto = KontoFirmowe(self.nip, self.nazwa)
         konto.saldo = 200
-        konto.przelew(30)
-        self.assertEqual(konto.historia, [-30], "Operacja przelewu nie została poprawnie dodawana do historii - firma")
+        konto.przelew(34)
+        self.assertEqual(konto.historia, [-34], "Operacja przelewu nie została poprawnie dodawana do historii - firma")
 
     def test_dodawanie_operacji_przelew_ekspress_firma(self):
         konto = KontoFirmowe(self.nip, self.nazwa)
