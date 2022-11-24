@@ -39,6 +39,12 @@ class Konto:
         self.historia.append(-kwota)
         self.historia.append(-self.oplata_ekspres)
 
+    def czy_dodatnie(self):
+        for i in self.historia[-3:]:
+            if i < 0:
+                return False
+        return True
+
     def zaciagnij_kedyt(self, kwota):
         if len(self.historia) < 5:
             return False
@@ -46,10 +52,7 @@ class Konto:
         for i in self.historia[-5:]:
             suma += i
 
-        czy_dodatnie = True
-        for i in self.historia[-3:]:
-            if i < 0:
-                czy_dodatnie = False
+        czy_dodatnie = self.czy_dodatnie()
         
         if suma > kwota and czy_dodatnie:
             self.saldo += kwota
