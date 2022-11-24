@@ -16,3 +16,9 @@ class KontoFirmowe(Konto):
         else:
             return nip
 
+    def zaciagnij_kedyt(self, kwota):
+        if -1775 not in self.historia or self.saldo < 2 * kwota:
+            return False
+        self.saldo += kwota
+        return True
+
