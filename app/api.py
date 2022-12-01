@@ -9,14 +9,14 @@ app = Flask(__name__)
 @app.route("/konta/stworz_konto", methods=['POST'])
 def stworz_konto():
     dane = request.get_json()
-    print("Request o stworzenie konta z danymi: " + dane)
+    print(f"Request o stworzenie konta z danymi: {dane}")
     konto = Konto(dane["imie"], dane["nazwisko"], dane["PESEL"])
-    RejestrKont.dodaj_konto(konto)
+    RejestrKont.dodaj(konto)
     return jsonify("Konto stworzone"), 201
 
 @app.route("/konta/ilosc", methods=['GET'])
 def ilosc():
-    return "Ilość kont: "+ RejestrKont.ilosc(), 200
+    return f"Ilość kont: {RejestrKont.ilosc()}", 200
 
 @app.route("/konta/konto/<pesel>", methods=['GET'])
 def wyszukaj_konto(pesel):
