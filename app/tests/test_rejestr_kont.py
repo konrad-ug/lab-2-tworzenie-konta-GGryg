@@ -41,6 +41,14 @@ class TestRejestrKont(unittest.TestCase):
         ilosc = RejestrKont.ilosc()
         self.assertEqual(ilosc, 5, "Zła ilość kont")
 
+    def test_6_usun_konto(self):
+        ilosc_przed = RejestrKont.ilosc()
+        konto = RejestrKont.szukaj(self.PESEL)
+        RejestrKont.usun(konto)
+        ilosc_po = RejestrKont.ilosc()
+        self.assertEqual(ilosc_po, ilosc_przed - 1, "Ilość kont się nie zmieniła po usunięciu")
+
+
 
 
     @classmethod

@@ -23,4 +23,23 @@ def wyszukaj_konto(pesel):
     print("Request o wyszukanie konta o peselu " + pesel)
     konto = RejestrKont.szukaj(pesel)
     print(konto)
-    return jsonify(imie=konto.imie, nazwisko=konto.nazwisko, pesel=konto.PESEL), 200
+    return jsonify(imie=konto.imie, nazwisko=konto.nazwisko, pesel=konto.PESEL, saldo=konto.saldo), 200
+
+@app.route("/konta/konto/zmien/<pesel>", methods=['PUT'])
+def zmien_dane(pesel):
+    dane = request.get_json()
+    print(f"Request o zmieniuniu danych z {dane}")
+    konto = RejestrKont.szukaj(pesel)
+    print("znaleziono")
+    konto.imie = dane["imie"] if "imie" in dane else konto.imie
+    konto.nazwisko = dane["nazwisko"] if "nazwisko" in dane else konto.nazwisko
+    konto.PESEL = dane["PESEL"] if "PESEL" in dane else konto.PESEL
+    konto.saldo = dane["saldo"] if "saldo" in dane else konto.saldo
+    return jsonify("Update zakończony z powodzeniem"), 200
+
+@app.route("/konta/konto/<pesel>/usun", methods=['DELETE'])
+def usuc_konto(pesel):
+    print(f"Request o usunięciu konto o peselu: {pesel}")
+    konto = RejestrKont.szukaj(pesel)
+    RejestrKont.usun(konto)
+    return "Konto zostało usunięte", 200

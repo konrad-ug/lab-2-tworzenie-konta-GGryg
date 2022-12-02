@@ -17,3 +17,7 @@ class RejestrKont():
             if konto.PESEL == pesel:
                 return konto
         return None
+
+    @classmethod
+    def usun(cls, konto):
+        list.remove(konto)
