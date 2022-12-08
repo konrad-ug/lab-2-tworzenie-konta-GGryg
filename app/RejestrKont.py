@@ -5,7 +5,8 @@ class RejestrKont():
 
     @classmethod
     def dodaj(cls, konto):
-        cls.lista.append(konto)
+        if cls.sprawdz_pesel(konto.PESEL):
+            cls.lista.append(konto)
 
     @classmethod
     def ilosc(cls):
@@ -20,4 +21,11 @@ class RejestrKont():
 
     @classmethod
     def usun(cls, konto):
-        list.remove(konto)
+        cls.lista.remove(konto)
+
+    @classmethod
+    def sprawdz_pesel(cls, pesel):
+        for konto in cls.lista:
+            if konto.PESEL == pesel:
+                return False
+        return True

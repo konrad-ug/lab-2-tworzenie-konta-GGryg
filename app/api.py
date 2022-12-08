@@ -10,6 +10,10 @@ app = Flask(__name__)
 def stworz_konto():
     dane = request.get_json()
     print(f"Request o stworzenie konta z danymi: {dane}")
+    czy_dostępny = RejestrKont.sprawdz_pesel(dane["PESEL"])
+    if czy_dostępny == False:
+        print("NIE")
+        return jsonify("Konto o takim peselu już istanieje"), 400
     konto = Konto(dane["imie"], dane["nazwisko"], dane["PESEL"])
     RejestrKont.dodaj(konto)
     return jsonify("Konto stworzone"), 201
@@ -37,7 +41,7 @@ def zmien_dane(pesel):
     konto.saldo = dane["saldo"] if "saldo" in dane else konto.saldo
     return jsonify("Update zakończony z powodzeniem"), 200
 
-@app.route("/konta/konto/<pesel>/usun", methods=['DELETE'])
+@app.route("/konta/konto/usun/<pesel>", methods=['DELETE'])
 def usuc_konto(pesel):
     print(f"Request o usunięciu konto o peselu: {pesel}")
     konto = RejestrKont.szukaj(pesel)
