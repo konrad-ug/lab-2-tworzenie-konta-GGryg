@@ -1,5 +1,5 @@
 import unittest
-from unittest import patch
+from unittest.mock import patch
 
 from ..Konto import Konto
 from ..KontoFirmowe import KontoFirmowe

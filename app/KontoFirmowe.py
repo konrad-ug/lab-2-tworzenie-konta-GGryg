@@ -24,7 +24,7 @@ class KontoFirmowe(Konto):
         date_today = datetime.date.today()
         today = date_today.strftime("%Y-%m-%d")
         gov_url = os.getenv('BANK_APP_MF_URL', 'https://wl-test.mf.gov.pl')
-        resp = requests.get(gov_url + "/api/search/nip/" + cls.nip + "?date=" + today)
+        resp = requests.get(gov_url + "/api/search/nip/" + nip + "?date=" + today)
         if resp.status_code == 200:
             return True
         return False

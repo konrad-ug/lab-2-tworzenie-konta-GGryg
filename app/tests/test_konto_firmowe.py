@@ -19,15 +19,17 @@ class TestKontoFirmowe(unittest.TestCase):
         self.assertEqual(konto.saldo, 0, "Saldo nie jest zerowe")
 
     @patch('requests.get')
-    def test_nip_dlugosc(self):
+    def test_nip_dlugosc(self, mock_g):
         mock_res = self._mock_response(status=400)
+        mock_g.return_value = mock_res
         nip_krotki = "23"
         konto = KontoFirmowe(nip_krotki, self.name)
-        self.assertEqual(konto.nip, "Niepoprawny NIP!")
+        self.assertEqual(konto.nip, "Pranie!")
         
     @patch('requests.get')
-    def test_nip_litery(self):
+    def test_nip_litery(self, mock_g):
         mock_res = self._mock_response(status=400)
+        mock_g.return_value = mock_res
         nip_litery = "2937asdsd"
         konto = KontoFirmowe(nip_litery, self.name)
-        self.assertEqual(konto.nip, "Niepoprawny NIP!")
+        self.assertEqual(konto.nip, "Pranie!")
