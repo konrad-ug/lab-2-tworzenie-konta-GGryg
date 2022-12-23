@@ -1,5 +1,7 @@
 import unittest
 from parameterized import parameterized
+from unittest.mock import patch
+
 
 from ..Konto import Konto
 from ..KontoFirmowe import KontoFirmowe
@@ -13,7 +15,9 @@ class TestKredyt(unittest.TestCase):
     name = "nazwa"
     nip = "1234567890"
 
-    def setUp(self):
+    @patch('app.KontoFirmowe.KontoFirmowe.nip_czy_istnieje')
+    def setUp(self, mock_nip_czy_istnieje):
+        mock_nip_czy_istnieje.return_value = True
         self.konto = Konto(self.imie, self.nazwisko, self.PESEL)
         self.kontoFirma = KontoFirmowe(self.nip, self.name)
 

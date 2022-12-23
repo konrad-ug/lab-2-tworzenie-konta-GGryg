@@ -1,5 +1,5 @@
 import unittest
-
+from unittest.mock import patch
 from ..Konto import Konto
 from ..KontoFirmowe import KontoFirmowe
 
@@ -29,18 +29,24 @@ class TestBankTransfers(unittest.TestCase):
         konto.przelew(self.doPzelewu)
         self.assertLess(konto.saldo, 0, "Zbyt duży przelew został wykonany, konto osobiste")
 
-    def test_dostanie_przelewu_firma(self):
+    @patch('app.KontoFirmowe.KontoFirmowe.nip_czy_istnieje')
+    def test_dostanie_przelewu_firma(self, mock_nip_czy_istnieje):
+        mock_nip_czy_istnieje.return_value = True
         konto = KontoFirmowe(self.nip, self.nazwa)
         konto.dostaniePrzelew(self.doPzelewu)
         self.assertEqual(konto.saldo, self.doPzelewu, "saldo się nie zwiększyło, konto firmowe")
 
-    def test_zrobienie_przelewu_firma(self):
+    @patch('app.KontoFirmowe.KontoFirmowe.nip_czy_istnieje')
+    def test_zrobienie_przelewu_firma(self, mock_nip_czy_istnieje):
+        mock_nip_czy_istnieje.return_value = True
         konto = KontoFirmowe(self.nip, self.nazwa)
         konto.saldo = 1000
         konto.przelew(self.doPzelewu)
         self.assertEqual(konto.saldo, 1000-self.doPzelewu, "saldo się nie zmiejszyło, konto firmowe")
 
-    def test_przelew_zbyt_duzy_firma(self):
+    @patch('app.KontoFirmowe.KontoFirmowe.nip_czy_istnieje')
+    def test_przelew_zbyt_duzy_firma(self, mock_nip_czy_istnieje):
+        mock_nip_czy_istnieje.return_value = True
         konto = KontoFirmowe(self.nip, self.nazwa)
         konto.saldo = 100
         konto.przelew(self.doPzelewu)
@@ -52,7 +58,9 @@ class TestBankTransfers(unittest.TestCase):
         konto.przelew_ekspress(400)
         self.assertEqual(konto.saldo, 599, "Przelew ekspresowy nie pobiera oplaty poprawnie, konto osobiste")
 
-    def test_przelew_ekspress_firma(self):
+    @patch('app.KontoFirmowe.KontoFirmowe.nip_czy_istnieje')
+    def test_przelew_ekspress_firma(self, mock_nip_czy_istnieje):
+        mock_nip_czy_istnieje.return_value = True
         konto = KontoFirmowe(self.nip, self.nazwa)
         konto.saldo = 1000
         konto.przelew_ekspress(400)
@@ -64,7 +72,9 @@ class TestBankTransfers(unittest.TestCase):
         konto.przelew_ekspress(500)
         self.assertLess(konto.saldo, -1, "Zbyt duży przelew ekspresowy został wykonany, konto osobiste")
 
-    def test_przelew_ekspress_za_duzy_firma(self):
+    @patch('app.KontoFirmowe.KontoFirmowe.nip_czy_istnieje')
+    def test_przelew_ekspress_za_duzy_firma(self, mock_nip_czy_istnieje):
+        mock_nip_czy_istnieje.return_value = True
         konto = KontoFirmowe(self.nip, self.nazwa)
         konto.saldo = 400
         konto.przelew_ekspress(500)
@@ -76,7 +86,9 @@ class TestBankTransfers(unittest.TestCase):
         konto.przelew_ekspress(400)
         self.assertEqual(konto.saldo, -1, "Nie wystarczjąco środków by pobrać opłate, konto osobiste")
 
-    def test_przelew_ekspress_oplata_nieprawidlowa_firma(self):
+    @patch('app.KontoFirmowe.KontoFirmowe.nip_czy_istnieje')
+    def test_przelew_ekspress_oplata_nieprawidlowa_firma(self, mock_nip_czy_istnieje):
+        mock_nip_czy_istnieje.return_value = True
         konto = KontoFirmowe(self.nip, self.nazwa)
         konto.saldo = 400
         konto.przelew_ekspress(400)
