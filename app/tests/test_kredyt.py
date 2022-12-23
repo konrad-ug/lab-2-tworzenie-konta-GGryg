@@ -1,5 +1,7 @@
 import unittest
 from parameterized import parameterized
+from unittest.mock import patch, Mock
+
 
 from ..Konto import Konto
 from ..KontoFirmowe import KontoFirmowe
@@ -13,7 +15,13 @@ class TestKredyt(unittest.TestCase):
     name = "nazwa"
     nip = "1234567890"
 
-    def setUp(self):
+    def _mock_response(self, status):
+        return Mock(status_code=status)
+
+    @patch('requests.get')
+    def setUp(self, mock_nip_czy_istnieje):
+        mock_res = self._mock_response(status=200)
+        mock_nip_czy_istnieje.return_value = mock_res
         self.konto = Konto(self.imie, self.nazwisko, self.PESEL)
         self.kontoFirma = KontoFirmowe(self.nip, self.name)
 
