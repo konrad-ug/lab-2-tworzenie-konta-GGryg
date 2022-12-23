@@ -1,5 +1,6 @@
 import unittest
-from unittest.mock import patch
+from unittest.mock import patch, Mock
+
 from ..Konto import Konto
 from ..KontoFirmowe import KontoFirmowe
 
@@ -11,6 +12,9 @@ class TestBankTransfers(unittest.TestCase):
 
     nazwa = "nazwa"
     nip = "1234567890"
+
+    def _mock_response(self, status):
+        return Mock(status_code=status)
     
     def test_dostanie_przelewu(self):
         konto = Konto(self.imie, self.nazwisko, self.PESEL)
@@ -29,24 +33,27 @@ class TestBankTransfers(unittest.TestCase):
         konto.przelew(self.doPzelewu)
         self.assertLess(konto.saldo, 0, "Zbyt duży przelew został wykonany, konto osobiste")
 
-    @patch('app.KontoFirmowe.KontoFirmowe.nip_czy_istnieje')
+    @patch('requests.get')
     def test_dostanie_przelewu_firma(self, mock_nip_czy_istnieje):
-        mock_nip_czy_istnieje.return_value = True
+        mock_res = self._mock_response(status=200)
+        mock_nip_czy_istnieje.return_value = mock_res
         konto = KontoFirmowe(self.nip, self.nazwa)
         konto.dostaniePrzelew(self.doPzelewu)
         self.assertEqual(konto.saldo, self.doPzelewu, "saldo się nie zwiększyło, konto firmowe")
 
-    @patch('app.KontoFirmowe.KontoFirmowe.nip_czy_istnieje')
+    @patch('requests.get')
     def test_zrobienie_przelewu_firma(self, mock_nip_czy_istnieje):
-        mock_nip_czy_istnieje.return_value = True
+        mock_res = self._mock_response(status=200)
+        mock_nip_czy_istnieje.return_value = mock_res
         konto = KontoFirmowe(self.nip, self.nazwa)
         konto.saldo = 1000
         konto.przelew(self.doPzelewu)
         self.assertEqual(konto.saldo, 1000-self.doPzelewu, "saldo się nie zmiejszyło, konto firmowe")
 
-    @patch('app.KontoFirmowe.KontoFirmowe.nip_czy_istnieje')
+    @patch('requests.get')
     def test_przelew_zbyt_duzy_firma(self, mock_nip_czy_istnieje):
-        mock_nip_czy_istnieje.return_value = True
+        mock_res = self._mock_response(status=200)
+        mock_nip_czy_istnieje.return_value = mock_res
         konto = KontoFirmowe(self.nip, self.nazwa)
         konto.saldo = 100
         konto.przelew(self.doPzelewu)
@@ -58,9 +65,10 @@ class TestBankTransfers(unittest.TestCase):
         konto.przelew_ekspress(400)
         self.assertEqual(konto.saldo, 599, "Przelew ekspresowy nie pobiera oplaty poprawnie, konto osobiste")
 
-    @patch('app.KontoFirmowe.KontoFirmowe.nip_czy_istnieje')
+    @patch('requests.get')
     def test_przelew_ekspress_firma(self, mock_nip_czy_istnieje):
-        mock_nip_czy_istnieje.return_value = True
+        mock_res = self._mock_response(status=200)
+        mock_nip_czy_istnieje.return_value = mock_res
         konto = KontoFirmowe(self.nip, self.nazwa)
         konto.saldo = 1000
         konto.przelew_ekspress(400)
@@ -72,9 +80,10 @@ class TestBankTransfers(unittest.TestCase):
         konto.przelew_ekspress(500)
         self.assertLess(konto.saldo, -1, "Zbyt duży przelew ekspresowy został wykonany, konto osobiste")
 
-    @patch('app.KontoFirmowe.KontoFirmowe.nip_czy_istnieje')
+    @patch('requests.get')
     def test_przelew_ekspress_za_duzy_firma(self, mock_nip_czy_istnieje):
-        mock_nip_czy_istnieje.return_value = True
+        mock_res = self._mock_response(status=200)
+        mock_nip_czy_istnieje.return_value = mock_res
         konto = KontoFirmowe(self.nip, self.nazwa)
         konto.saldo = 400
         konto.przelew_ekspress(500)
@@ -86,9 +95,10 @@ class TestBankTransfers(unittest.TestCase):
         konto.przelew_ekspress(400)
         self.assertEqual(konto.saldo, -1, "Nie wystarczjąco środków by pobrać opłate, konto osobiste")
 
-    @patch('app.KontoFirmowe.KontoFirmowe.nip_czy_istnieje')
+    @patch('requests.get')
     def test_przelew_ekspress_oplata_nieprawidlowa_firma(self, mock_nip_czy_istnieje):
-        mock_nip_czy_istnieje.return_value = True
+        mock_res = self._mock_response(status=200)
+        mock_nip_czy_istnieje.return_value = mock_res
         konto = KontoFirmowe(self.nip, self.nazwa)
         konto.saldo = 400
         konto.przelew_ekspress(400)
