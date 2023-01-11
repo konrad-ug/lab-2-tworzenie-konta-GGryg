@@ -11,6 +11,8 @@ class KontoFirmowe(Konto):
         self.saldo = 0
         self.oplata_ekspres = 5
         self.historia = []
+        self.mail = "Historia konta Twojej firmy to: "
+
 
     def nip_poprawnosc(self, nip):
         help = re.search(r"^[0-9]{10}$", nip)

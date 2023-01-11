@@ -1,4 +1,7 @@
 import re
+import datetime
+
+from app.SMTP import SMTPConnection
 
 class Konto:
     def __init__(self, imie, nazwisko, pesel, kod=None):
@@ -9,6 +12,7 @@ class Konto:
         self.kod = kod
         self.oplata_ekspres = 1
         self.historia = []
+        self.mail = "Twoja historia konta to: "
 
         self.coupon(kod, pesel)
 
@@ -58,3 +62,9 @@ class Konto:
             self.saldo += kwota
             return True
         return False
+
+    def send_mail(self, email, connector: SMTPConnection):
+        date_today = datetime.date.today()
+        subject = "Wyciąg z dnia " + str(date_today)
+        text = self.mail + str(self.historia)
+        return connector.send(subject, text, email)
